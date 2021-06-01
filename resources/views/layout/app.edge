@@ -7,11 +7,61 @@
     @entryPointStyles('app')
     @entryPointScripts('app')
 
-    <title>Hello, world!</title>
+    <title>Lista de Tarefas</title>
   </head>
   <body>
-    <div class="container">
-      <h1>Hello, world!</h1>
+    <nav class="
+      navbar navbar-expand-lg
+      navbar-{{ (await auth.user?.related('setting').query().first())?.theme || 'light' }}
+      bg-{{ (await auth.user?.related('setting').query().first())?.theme || 'light' }} ">
+      <div class="container">
+        <a class="navbar-brand" href="{{ route('root') }}">Lista de Tarefas</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ route('lists.index') }}">Listas <span class="sr-only"></span></a>
+            </li>
+          </ul> 
+          <ul class="navbar-nav">
+            @if(auth.isLoggedIn)
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ auth.user?.name }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{{ route('settings.index') }}">Configurações</a></li>
+                  <li><a class="dropdown-item" href="{{ route('auth.logout') }}">Sair</a></li>
+                </ul>
+              </li>
+            @else
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('auth.login') }}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('auth.register') }}">Registrar</a>
+              </li>
+            @endif
+          </ul>
+        </div>
+      </div>
+    </nav>
+      
+      
+    <div class="container page-body">
+      @if(flashMessages.has('notice'))
+      <div class=" alert alert-success">
+        {{  flashMessages.get('notice')}}
+      </div>
+      @endif
+      @if(flashMessages.has('error'))
+      <div class=" alert alert-danger">
+        {{  flashMessages.get('error')}}
+      </div>
+      @endif
       @!section('content')
     </div>
   </body>

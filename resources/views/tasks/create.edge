@@ -1,17 +1,14 @@
 @layout('layout/app')
 
 @section('content')
-  <h1>Nova Tarefa</h1>
-  <form action="{{ route('tasks.store') }}" method="POST">
+  <h2>Nova Tarefa</h2>
+
+  <form action="{{ route('lists.tasks.store', {list_id: list.id }) }}" method="POST">
+    {{ csrfField() }}
+    @include('tasks/form')
     <div>
-      <label for="title">Título</label>
-      <input type="text" name="title" id="title">
-    </div>
-    <div>
-      <button type="submit">Cadastrar</button>
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+      <a href="{{ route('lists.tasks.index', {list_id: list.id }) }}" class="btn btn-link">Voltar</a>
     </div>
   </form>
-  <div>
-    <a href="{{ route('tasks.index') }}">Voltar</a>
-  </div>
 @endsection

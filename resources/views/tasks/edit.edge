@@ -1,21 +1,22 @@
 @layout('layout/app')
 
 @section('content')
-  <h1>Editando Tarefa</h1>
-  <form action="{{ route('tasks.update', { id: task.id, qs: { _method: 'PATCH' } }) }}" method="POST">
-    <div>
-      <label for="title">Título</label>
-      <input type="text" name="title" id="title" value="{{ task.title }}">
+  <h2>Editando Tarefa</h2>
+  <form action="{{ route('lists.tasks.update', { id: task.id, list_id: list.id , qs: { _method: 'PATCH' } }) }}" method="POST">
+    {{ csrfField() }}
+    @include('tasks/form')
+    <div class="mb-3">
+      <label for="description" class="form-label">Descrição</label>
+      <input type="text" class="form-control" name="description" id="description" value="{{  flashMessages.get('description', task.description) || ''}}">
+      @if(flashMessages.has('errors.description'))
+        <small class="text-danger">
+          {{  flashMessages.get('errors.description')}}
+        </small>
+  @endif
     </div>
     <div>
-      <label for="description">Descrição</label>
-      <input type="text" name="description" id="description" value="{{ task.description || '' }}">
-    </div>
-    <div>
-      <button type="submit">Atualizar</button>
+      <button type="submit" class="btn btn-primary">Atualizar</button>
+    <a href="{{ route('lists.tasks.index', {list_id: list.id} ) }}" class="btn btn-link">Voltar</a>
     </div>
   </form>
-  <div>
-    <a href="{{ route('tasks.index') }}">Voltar</a>
-  </div>
 @endsection
