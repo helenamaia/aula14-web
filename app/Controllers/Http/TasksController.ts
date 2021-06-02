@@ -89,7 +89,7 @@ export default class TasksController {
 
   }
 
-  private async getList(auth: AuthContract, id, preload = false): Promise<List>{
+  private async getList(auth: AuthContract, id): Promise<List>{
     const user = auth.user!!
     
       return await user.related('lists').query().where('id', id).firstOrFail()
